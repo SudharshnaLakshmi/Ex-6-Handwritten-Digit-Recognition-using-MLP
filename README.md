@@ -24,38 +24,35 @@ It can be seen that the machine learning model can recognize the hand written di
 ```
 ### Developed by: SUDHARSHNA LAKSHMI S
 ### Reg no:212221230110
-    
+```
+```
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-
-data = pd.read_csv('train.csv')
+data = pd.read_csv("train.csv")
 data = np.array(data)
 m, n = data.shape
 np.random.shuffle(data)
-
 data_dev = data[0:1000].T
 Y_dev = data_dev[0]
 X_dev = data_dev[1:n]
-X_dev = X_dev / 255.
-
+X_dev = X_dev / 255
 data_train = data[1000:m].T
 Y_train = data_train[0]
 X_train = data_train[1:n]
 X_train = X_train / 255.
 _,m_train = X_train.shape
 Y_train
-
 def init_params():
     W1 = np.random.rand(10, 784) - 0.5
     b1 = np.random.rand(10, 1) - 0.5
     W2 = np.random.rand(10, 10) - 0.5
     b2 = np.random.rand(10, 1) - 0.5
     return W1, b1, W2, b2
-    
+
 def ReLU(Z):
     return np.maximum(Z, 0)
-    
+
 def softmax(Z):
     A = np.exp(Z) / sum(np.exp(Z))
     return A
@@ -66,7 +63,7 @@ def forward_prop(W1, b1, W2, b2, X):
     Z2 = W2.dot(A1) + b2
     A2 = softmax(Z2)
     return Z1, A1, Z2, A2
-    
+
 def ReLU_deriv(Z):
     return Z > 0
 
@@ -75,7 +72,7 @@ def one_hot(Y):
     one_hot_Y[np.arange(Y.size), Y] = 1
     one_hot_Y = one_hot_Y.T
     return one_hot_Y
-    
+
 def backward_prop(Z1, A1, Z2, A2, W1, W2, X, Y):
     one_hot_Y = one_hot(Y)
     dZ2 = A2 - one_hot_Y
@@ -92,14 +89,13 @@ def update_params(W1, b1, W2, b2, dW1, db1, dW2, db2, alpha):
     W2 = W2 - alpha * dW2  
     b2 = b2 - alpha * db2    
     return W1, b1, W2, b2
-    
-def get_predictions(A2):
-    return np.argmax(A2, 0)    
-    
+    def get_predictions(A2):
+    return np.argmax(A2, 0)
+
 def get_accuracy(predictions, Y):
     print(predictions, Y)
     return np.sum(predictions == Y) / Y.size
-    
+
 def gradient_descent(X, Y, alpha, iterations):
     W1, b1, W2, b2 = init_params()
     for i in range(iterations):
@@ -109,33 +105,41 @@ def gradient_descent(X, Y, alpha, iterations):
         if i % 10 == 0:
             print("Iteration: ", i)
             predictions = get_predictions(A2)
-            print(get_accuracy(predictions, Y))
+      test_prediction(0, W1, b1, W2, b2)print(get_accuracy(predictions, Y))
     return W1, b1, W2, b2
     W1, b1, W2, b2 = gradient_descent(X_train, Y_train, 0.10, 500)
-    
-def make_predictions(X, W1, b1, W2, b2):
-    _, _, _, A2 = forward_prop(W1, b1, W2, b2, X)
+    def make_predictions(X, W1, b1, W2, b2):
+    A2 = forward_prop(W1, b1, W2, b2, X)
     predictions = get_predictions(A2)
-return predictions
-   
+    return predictions
+
 def test_prediction(index, W1, b1, W2, b2):
     current_image = X_train[:, index, None]
     prediction = make_predictions(X_train[:, index, None], W1, b1, W2, b2)
     label = Y_train[index]
     print("Prediction: ", prediction)
     print("Label: ", label)
+    
     current_image = current_image.reshape((28, 28)) * 255
     plt.gray()
     plt.imshow(current_image, interpolation='nearest')
     plt.show()
-    test_prediction(0, W1, b1, W2, b2)
-    test_prediction(1, W1, b1, W2, b2)
-    test_prediction(2, W1, b1, W2, b2)
-    test_prediction(3, W1, b1, W2, b2)
-    dev_predictions = make_predictions(X_dev, W1, b1, W2, b2)
-    get_accuracy(dev_predictions, Y_dev)   
+    test_prediction(0, W1, b1, W2, b2)  
 ```
 ## Output :
+![image](https://github.com/SudharshnaLakshmi/Ex-6-Handwritten-Digit-Recognition-using-MLP/assets/93427267/df9a6130-a96f-4cc1-a176-c8db0fbb9736)
+
+![image](https://github.com/SudharshnaLakshmi/Ex-6-Handwritten-Digit-Recognition-using-MLP/assets/93427267/7109f318-ded9-4d8e-b9fd-68fd36b53360)
+
+![image](https://github.com/SudharshnaLakshmi/Ex-6-Handwritten-Digit-Recognition-using-MLP/assets/93427267/bd2f4a68-27ee-496a-807b-a74a7a1cb392)
+
+![image](https://github.com/SudharshnaLakshmi/Ex-6-Handwritten-Digit-Recognition-using-MLP/assets/93427267/22b8e71b-b752-4038-b284-0bce66e92a63)
+
+![image](https://github.com/SudharshnaLakshmi/Ex-6-Handwritten-Digit-Recognition-using-MLP/assets/93427267/41095a84-9a8a-4a0c-a577-53a0bff0fd32)
+
+![image](https://github.com/SudharshnaLakshmi/Ex-6-Handwritten-Digit-Recognition-using-MLP/assets/93427267/1b641cdc-d897-439e-b9e9-da8a60ab3761)
+
+![image](https://github.com/SudharshnaLakshmi/Ex-6-Handwritten-Digit-Recognition-using-MLP/assets/93427267/c74d5394-2012-4e4f-b50d-73c84ac7a558)
 
 ## Result:
 Thus The Implementation of Handwritten Digit Recognition using MLP Is Executed Successfully.
